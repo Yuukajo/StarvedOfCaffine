@@ -39,8 +39,7 @@ public class PlayerMovement : NetworkBehaviour
             Destroy(playerCamera.gameObject);
             return;
         }
-        //Cursor.lockState = CursorLockMode.Locked;
-        //Cursor.visible = false;
+        ;
         characterController = GetComponent<CharacterController>();
         SetShadowOnly();
 
