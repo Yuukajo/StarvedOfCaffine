@@ -1,0 +1,18 @@
+# Unity folders
+[Ll]ibrary/
+[Tt]emp/
+[Oo]bj/
+[Bb]uild/
+[Bb]uilds/
+Logs/
+UserSettings/
+
+# IDE / tools
+.vs/
+.idea/
+
+# Visual Studio files
+*.csproj
+*.sln
+*.user
+*.userprefs
