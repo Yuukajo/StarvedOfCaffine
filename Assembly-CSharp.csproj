@@ -1319,6 +1319,14 @@
       <Project>{CE773EBD-DF66-D0BE-1C4C-0569417A4684}</Project>
       <Name>ParrelSync</Name>
     </ProjectReference>
+    <ProjectReference Include="PurrNetLobby_Editor.csproj">
+      <Project>{830E1DD9-47CE-9339-0088-0E0477EDC6E5}</Project>
+      <Name>PurrNetLobby_Editor</Name>
+    </ProjectReference>
+    <ProjectReference Include="PurrNetLobbySetup.csproj">
+      <Project>{6B4F8CEE-F572-AF04-C1C4-B37D3EEB9FEC}</Project>
+      <Name>PurrNetLobbySetup</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="GenerateTargetFrameworkMonikerAttribute" />
