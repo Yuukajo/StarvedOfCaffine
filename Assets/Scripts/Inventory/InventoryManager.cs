@@ -8,6 +8,7 @@ using UnityEngine;
 
 public class InventoryManager : MonoBehaviour
 {
+    [SerializeField] private List<Item> allItems = new();
     [SerializeField] private CanvasGroup canvasGroup;
     [SerializeField] private InventoryItem itemPrefab;
     [SerializeField] private List<InventorySlot> slots;
@@ -28,18 +29,17 @@ public class InventoryManager : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetKeyDown (KeyCode.E))
+        if (Input.GetKeyDown(KeyCode.E))
         {
             bool isOpen = canvasGroup.alpha > 0;
             ToggleInventory(!isOpen);
-           
         }
     }
 
     private void ToggleInventory (bool toggle)
     {
         canvasGroup.alpha = toggle ? 1 : 0;
-        canvasGroup.blocksRaycasts = !toggle;
+        canvasGroup.blocksRaycasts = toggle;
         Cursor.lockState = toggle ? CursorLockMode.None : CursorLockMode.Locked;
         Cursor.visible = toggle;
     }
@@ -51,7 +51,6 @@ public class InventoryManager : MonoBehaviour
 
     private bool TryStackItem(Item item)
     {
-        
         for (int i = 0; i < _inventoryData.Length; i++)
         {
             var data = _inventoryData[i];
@@ -61,13 +60,12 @@ public class InventoryManager : MonoBehaviour
             if (data.itemName != item.ItemName)
                 continue;
 
-            data.amout++;
-            data.inventoryItem.Init(item.ItemName, item.ItemPicture, data.amout);
+            data.amount++;
+            data.inventoryItem.Init(item.ItemName, item.ItemPicture, data.amount);
             _inventoryData[i] = data;
 
             return true;
         }
-
         return false;
     }
 
@@ -75,7 +73,7 @@ public class InventoryManager : MonoBehaviour
     {
         for (int i = 0; i < slots.Count; i++)
         {
-            InventorySlot slot = slots[i];
+            var slot = slots[i];
             if (!slot.isEmpty)
                 continue;
 
@@ -85,18 +83,61 @@ public class InventoryManager : MonoBehaviour
             var itemData = new InventoryItemData()
             {
                 itemName = item.ItemName,
+                itemPicture = item.ItemPicture,
                 inventoryItem = inventoryItem,
-                amout = 1
+                amount = 1
             };
-
-
             _inventoryData[i] = itemData;
             slot.SetItem(inventoryItem);
             break;
+        }
+    }
+    
+    public void DropItem(InventoryItem inventoryItem)
+    {
+        for (int i = 0; i < _inventoryData.Length; i++)
+        {
+            var data = _inventoryData[i];
+            if (data.inventoryItem != inventoryItem)
+                continue;
+            
+            var itemToSpawn = allItems.Find(x => x.ItemName == data.itemName);
+            if (itemToSpawn == null)
+            {
+                Debug.LogError($"Item to spawn with name {data.itemName} not found! ");
+                return;
+            }
+            
+            Vector3 spawnPosition = PlayerMovement.localPlayerMovement.transform.position + PlayerMovement.localPlayerMovement.transform.forward + Vector3.up;
+            var item = Instantiate(itemToSpawn, spawnPosition, Quaternion.identity);
 
+            DeductItem(inventoryItem);
+            break;
         }
     }
 
+    private void DeductItem(InventoryItem inventoryItem)
+    {
+        for (int i = 0; i < _inventoryData.Length; i++)
+        {
+            var data = _inventoryData[i];
+            if (data.inventoryItem != inventoryItem)
+                continue;
+
+            data.amount--;
+            if (data.amount <= 0)
+            {
+                _inventoryData[i] = default;
+                slots[i].SetItem(null);
+                Destroy(inventoryItem.gameObject);
+            }
+            else
+            {
+                data.inventoryItem.Init(data.itemName, data.itemPicture, data.amount);
+                _inventoryData[i] = data;
+            }
+        }
+    }
 
     public void ItemMoved(InventoryItem item, InventorySlot newSlot)
     {
@@ -107,9 +148,7 @@ public class InventoryManager : MonoBehaviour
             Debug.LogError($"Couldnt find item {item.name} in inv data", this);
             return;
         }
-
         var oldData = _inventoryData[oldSlotIndex];
-
         _inventoryData[oldSlotIndex] = default;
         _inventoryData[newSlotIndex] = oldData;
     }
@@ -117,9 +156,9 @@ public class InventoryManager : MonoBehaviour
     [Serializable]
     public struct InventoryItemData
     {
+        public Sprite itemPicture;
         public string itemName;
         public InventoryItem inventoryItem;
-        public int amout;
-        
+        public int amount;
     }
 }

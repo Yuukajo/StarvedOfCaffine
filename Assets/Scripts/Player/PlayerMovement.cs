@@ -28,6 +28,7 @@ public class PlayerMovement : NetworkBehaviour
     private CharacterController characterController;
     private Vector3 velocity;
     private float verticalRotation = 0f;
+    public static PlayerMovement localPlayerMovement;
 
     protected override void OnSpawned()
     {
@@ -40,6 +41,7 @@ public class PlayerMovement : NetworkBehaviour
            return;
         }
         
+        localPlayerMovement = this;
         _playerCamera = Camera.main;
         characterController = GetComponent<CharacterController>();
         SetShadowOnly();
@@ -61,7 +63,6 @@ public class PlayerMovement : NetworkBehaviour
         }
     }
 
-
     protected override void OnDespawned()
     {
         base.OnDespawned();
@@ -72,10 +73,7 @@ public class PlayerMovement : NetworkBehaviour
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
     }
-
     
-    
-
     private void Update()
     {
         HandleMovement();

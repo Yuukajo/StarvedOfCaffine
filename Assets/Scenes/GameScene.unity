@@ -2251,6 +2251,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6708f1144d4061d46ba11861697bd036, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  allItems:
+  - {fileID: 2582295141567582028, guid: 0f75afa51c765034cb62c6c59accc244, type: 3}
   canvasGroup: {fileID: 713312011}
   itemPrefab: {fileID: 6057652437463708075, guid: 5abe1738d02591645af7b81fe68325eb, type: 3}
   slots:
@@ -2286,7 +2288,135 @@ MonoBehaviour:
   - {fileID: 1796475819}
   - {fileID: 428478129}
   - {fileID: 2111717802}
-  _inventoryData: []
+  _inventoryData:
+  - itemPicture: {fileID: 0}
+    itemName: 
+    inventoryItem: {fileID: 0}
+    amount: 0
+  - itemPicture: {fileID: 0}
+    itemName: 
+    inventoryItem: {fileID: 0}
+    amount: 0
+  - itemPicture: {fileID: 0}
+    itemName: 
+    inventoryItem: {fileID: 0}
+    amount: 0
+  - itemPicture: {fileID: 0}
+    itemName: 
+    inventoryItem: {fileID: 0}
+    amount: 0
+  - itemPicture: {fileID: 0}
+    itemName: 
+    inventoryItem: {fileID: 0}
+    amount: 0
+  - itemPicture: {fileID: 0}
+    itemName: 
+    inventoryItem: {fileID: 0}
+    amount: 0
+  - itemPicture: {fileID: 0}
+    itemName: 
+    inventoryItem: {fileID: 0}
+    amount: 0
+  - itemPicture: {fileID: 0}
+    itemName: 
+    inventoryItem: {fileID: 0}
+    amount: 0
+  - itemPicture: {fileID: 0}
+    itemName: 
+    inventoryItem: {fileID: 0}
+    amount: 0
+  - itemPicture: {fileID: 0}
+    itemName: 
+    inventoryItem: {fileID: 0}
+    amount: 0
+  - itemPicture: {fileID: 0}
+    itemName: 
+    inventoryItem: {fileID: 0}
+    amount: 0
+  - itemPicture: {fileID: 0}
+    itemName: 
+    inventoryItem: {fileID: 0}
+    amount: 0
+  - itemPicture: {fileID: 0}
+    itemName: 
+    inventoryItem: {fileID: 0}
+    amount: 0
+  - itemPicture: {fileID: 0}
+    itemName: 
+    inventoryItem: {fileID: 0}
+    amount: 0
+  - itemPicture: {fileID: 0}
+    itemName: 
+    inventoryItem: {fileID: 0}
+    amount: 0
+  - itemPicture: {fileID: 0}
+    itemName: 
+    inventoryItem: {fileID: 0}
+    amount: 0
+  - itemPicture: {fileID: 0}
+    itemName: 
+    inventoryItem: {fileID: 0}
+    amount: 0
+  - itemPicture: {fileID: 0}
+    itemName: 
+    inventoryItem: {fileID: 0}
+    amount: 0
+  - itemPicture: {fileID: 0}
+    itemName: 
+    inventoryItem: {fileID: 0}
+    amount: 0
+  - itemPicture: {fileID: 0}
+    itemName: 
+    inventoryItem: {fileID: 0}
+    amount: 0
+  - itemPicture: {fileID: 0}
+    itemName: 
+    inventoryItem: {fileID: 0}
+    amount: 0
+  - itemPicture: {fileID: 0}
+    itemName: 
+    inventoryItem: {fileID: 0}
+    amount: 0
+  - itemPicture: {fileID: 0}
+    itemName: 
+    inventoryItem: {fileID: 0}
+    amount: 0
+  - itemPicture: {fileID: 0}
+    itemName: 
+    inventoryItem: {fileID: 0}
+    amount: 0
+  - itemPicture: {fileID: 0}
+    itemName: 
+    inventoryItem: {fileID: 0}
+    amount: 0
+  - itemPicture: {fileID: 0}
+    itemName: 
+    inventoryItem: {fileID: 0}
+    amount: 0
+  - itemPicture: {fileID: 0}
+    itemName: 
+    inventoryItem: {fileID: 0}
+    amount: 0
+  - itemPicture: {fileID: 0}
+    itemName: 
+    inventoryItem: {fileID: 0}
+    amount: 0
+  - itemPicture: {fileID: 0}
+    itemName: 
+    inventoryItem: {fileID: 0}
+    amount: 0
+  - itemPicture: {fileID: 0}
+    itemName: 
+    inventoryItem: {fileID: 0}
+    amount: 0
+  - itemPicture: {fileID: 0}
+    itemName: 
+    inventoryItem: {fileID: 0}
+    amount: 0
+  - itemPicture: {fileID: 0}
+    itemName: 
+    inventoryItem: {fileID: 0}
+    amount: 0
 --- !u!225 &713312011
 CanvasGroup:
   m_ObjectHideFlags: 0

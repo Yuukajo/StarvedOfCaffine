@@ -13,9 +13,7 @@ public class Item : AInteractable
     protected override void OnSpawned()
     {
         base.OnSpawned();
-
-        if (!isServer)
-            rigidbody.isKinematic = true;
+        rigidbody.isKinematic = !isServer;
     }
 
     [ContextMenu("Test Pickup")]
@@ -24,6 +22,7 @@ public class Item : AInteractable
         if (InstanceHandler.TryGetInstance(out InventoryManager inventoryManager))
         {
             Debug.LogError($"Couldnt get inventory manager for item{itemName}!", this);
+            return;
         }
             
         inventoryManager.AddItem(this);
