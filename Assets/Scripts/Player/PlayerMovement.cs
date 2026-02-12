@@ -15,15 +15,16 @@ public class PlayerMovement : NetworkBehaviour
     [SerializeField] private float gravity = -9.81f;
     [SerializeField] private float groundCheckDistance = 0.2f;
 
-    [Header("Look Settings")]
+    [Header("Look Settings")] 
+    [SerializeField] private Vector3 cameraOffset;
     [SerializeField] private float lookSensitivity = 2f;
     [SerializeField] private float maxLookAngle = 80f;
 
     [Header("References")]
-    [SerializeField] private Camera playerCamera;
     [SerializeField] private NetworkAnimator playerAnimator;
     [SerializeField] private List<Renderer> playerRenderers;
 
+    private Camera _playerCamera;
     private CharacterController characterController;
     private Vector3 velocity;
     private float verticalRotation = 0f;
@@ -36,14 +37,16 @@ public class PlayerMovement : NetworkBehaviour
 
         if (!isOwner)
         {
-            Destroy(playerCamera.gameObject);
-            return;
+           return;
         }
-        ;
+        
+        _playerCamera = Camera.main;
         characterController = GetComponent<CharacterController>();
         SetShadowOnly();
-
-        if (playerCamera == null)
+        _playerCamera.transform.SetParent(transform);
+        _playerCamera.transform.localPosition = cameraOffset;
+        
+        if (_playerCamera == null)
         {
             enabled = false;
             return;
@@ -115,7 +118,7 @@ public class PlayerMovement : NetworkBehaviour
 
         verticalRotation -= mouseY;
         verticalRotation = Mathf.Clamp(verticalRotation, -maxLookAngle, maxLookAngle);
-        playerCamera.transform.localRotation = Quaternion.Euler(verticalRotation, 0f, 0f);
+        _playerCamera.transform.localRotation = Quaternion.Euler(verticalRotation, 0f, 0f);
 
         transform.Rotate(Vector3.up * mouseX);
     }
@@ -130,6 +133,9 @@ public class PlayerMovement : NetworkBehaviour
     {
         Gizmos.color = Color.red;
         Gizmos.DrawRay(transform.position + Vector3.up * 0.03f, Vector3.down * groundCheckDistance);
+
+        Gizmos.color = Color.magenta;
+        Gizmos.DrawWireSphere(transform.TransformPoint(cameraOffset), 0.1f);
     }
 #endif
 }

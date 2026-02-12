@@ -1,13 +1,22 @@
 using PurrNet;
 using UnityEngine;
 
-public class Item : MonoBehaviour
+public class Item : AInteractable
 {
     [SerializeField] private string itemName;
     [SerializeField] private Sprite itemPicture;
+    [SerializeField] private Rigidbody rigidbody;
 
     public string ItemName => itemName;
     public Sprite ItemPicture => itemPicture;
+
+    protected override void OnSpawned()
+    {
+        base.OnSpawned();
+
+        if (!isServer)
+            rigidbody.isKinematic = true;
+    }
 
     [ContextMenu("Test Pickup")]
     public void Pickup()
@@ -19,5 +28,22 @@ public class Item : MonoBehaviour
             
         inventoryManager.AddItem(this);
         Destroy(gameObject);
+    }
+
+    public override void Interact()
+    {
+        Pickup(); 
+    }
+
+    public override void OnHover()
+    {
+        base.OnHover();
+        Debug.Log("Strated hovering ");
+    }
+
+    public override void OnStopHover()
+    {
+        base.OnStopHover();
+        Debug.Log("Stopped hovering ");
     }
 }
