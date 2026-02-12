@@ -19,7 +19,7 @@ public class Item : AInteractable
     [ContextMenu("Test Pickup")]
     public void Pickup()
     {
-        if (InstanceHandler.TryGetInstance(out InventoryManager inventoryManager))
+        if (!InstanceHandler.TryGetInstance(out InventoryManager inventoryManager))
         {
             Debug.LogError($"Couldnt get inventory manager for item{itemName}!", this);
             return;

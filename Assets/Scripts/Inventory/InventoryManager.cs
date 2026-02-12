@@ -11,9 +11,10 @@ public class InventoryManager : MonoBehaviour
     [SerializeField] private List<Item> allItems = new();
     [SerializeField] private CanvasGroup canvasGroup;
     [SerializeField] private InventoryItem itemPrefab;
-    [SerializeField] private List<InventorySlot> slots;
-
+    [SerializeField] private List<InventorySlot> slots = new();
+    [SerializeField] private List<ActionSlot> actionSlots = new();
    [PurrReadOnly, SerializeField] private InventoryItemData[] _inventoryData;
+   private ActionSlot _activeActionSlot;
 
     public void Awake()
     {
@@ -104,7 +105,7 @@ public class InventoryManager : MonoBehaviour
             var itemToSpawn = allItems.Find(x => x.ItemName == data.itemName);
             if (itemToSpawn == null)
             {
-                Debug.LogError($"Item to spawn with name {data.itemName} not found! ");
+                Debug.LogError($"Item to spawn with name {data.itemName} not found! ", this);
                 return;
             }
             
@@ -151,6 +152,17 @@ public class InventoryManager : MonoBehaviour
         var oldData = _inventoryData[oldSlotIndex];
         _inventoryData[oldSlotIndex] = default;
         _inventoryData[newSlotIndex] = oldData;
+    }
+
+    public void SetActionSlotActive(ActionSlot actionSlot)
+    {
+        if(_activeActionSlot == actionSlot)
+            return;
+
+        if(_activeActionSlot != null)
+            _activeActionSlot.ToggleActive(false);
+        actionSlot.ToggleActive(true);
+        _activeActionSlot = actionSlot;
     }
 
     [Serializable]
