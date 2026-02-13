@@ -1,7 +1,7 @@
 using PurrNet;
 using UnityEngine;
 
-public class Item : AInteractable
+public abstract class Item : AInteractable
 {
     [SerializeField] private string itemName;
     [SerializeField] private Sprite itemPicture;
@@ -10,10 +10,16 @@ public class Item : AInteractable
     public string ItemName => itemName;
     public Sprite ItemPicture => itemPicture;
 
-    protected override void OnSpawned()
+    protected override void OnOwnerChanged(PlayerID? oldOwner, PlayerID? newOwner, bool asServer)
     {
-        base.OnSpawned();
-        rigidbody.isKinematic = !isServer;
+        base.OnOwnerChanged(oldOwner, newOwner, asServer);
+
+        if (PlayerInventory.localInventory.isHoldingItem(this))
+        {
+            rigidbody.isKinematic = true;
+            return;
+        }
+        rigidbody.isKinematic = !isOwner;
     }
 
     [ContextMenu("Test Pickup")]
@@ -32,6 +38,21 @@ public class Item : AInteractable
     public override void Interact()
     {
         Pickup(); 
+    }
+
+    public virtual void UseItem()
+    {
+        
+    }
+
+    public virtual void ConsumeItem()
+    {
+        
+    }
+    
+    public void SetKinematic(bool toggle)
+    {
+        rigidbody.isKinematic = toggle;
     }
 
     public override void OnHover()

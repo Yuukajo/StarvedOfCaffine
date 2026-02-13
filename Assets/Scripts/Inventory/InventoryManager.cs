@@ -102,22 +102,25 @@ public class InventoryManager : MonoBehaviour
             if (data.inventoryItem != inventoryItem)
                 continue;
             
-            var itemToSpawn = allItems.Find(x => x.ItemName == data.itemName);
+            var itemToSpawn = GetItemByName(data.itemName);
             if (itemToSpawn == null)
             {
                 Debug.LogError($"Item to spawn with name {data.itemName} not found! ", this);
                 return;
             }
             
+            PlayerInventory.localInventory.UnequipItem(itemToSpawn);
+            
             Vector3 spawnPosition = PlayerMovement.localPlayerMovement.transform.position + PlayerMovement.localPlayerMovement.transform.forward + Vector3.up;
             var item = Instantiate(itemToSpawn, spawnPosition, Quaternion.identity);
 
-            DeductItem(inventoryItem);
+            if(DeductItem(inventoryItem) <= 0)
+                PlayerInventory.localInventory.UnequipItem(itemToSpawn);
             break;
         }
     }
-
-    private void DeductItem(InventoryItem inventoryItem)
+    
+    private int DeductItem(InventoryItem inventoryItem)
     {
         for (int i = 0; i < _inventoryData.Length; i++)
         {
@@ -131,13 +134,17 @@ public class InventoryManager : MonoBehaviour
                 _inventoryData[i] = default;
                 slots[i].SetItem(null);
                 Destroy(inventoryItem.gameObject);
+                return 0;
             }
             else
             {
                 data.inventoryItem.Init(data.itemName, data.itemPicture, data.amount);
                 _inventoryData[i] = data;
+                return data.amount;
             }
         }
+
+        return 0;
     }
 
     public void ItemMoved(InventoryItem item, InventorySlot newSlot)
@@ -159,12 +166,33 @@ public class InventoryManager : MonoBehaviour
         if(_activeActionSlot == actionSlot)
             return;
 
-        if(_activeActionSlot != null)
+        if (_activeActionSlot != null)
+        {
+            PlayerInventory.localInventory.UnequipItem(GetItemByActionSlot(_activeActionSlot));
             _activeActionSlot.ToggleActive(false);
+        }
         actionSlot.ToggleActive(true);
         _activeActionSlot = actionSlot;
+        
+        PlayerInventory.localInventory.EquipItem(GetItemByActionSlot(actionSlot));
     }
 
+    private Item GetItemByName(string itemName)
+    {
+        return allItems.Find(x => x.ItemName == itemName);
+    }
+
+    private Item GetItemByActionSlot(ActionSlot actionSlot)
+    {
+        var inventorySlot = actionSlot.GetComponent<InventorySlot>();
+        for (int i = slots.Count - 1; i >= 0; i--)
+        {
+            if(slots[i] == actionSlot)
+                return GetItemByName(_inventoryData[i].itemName);
+        }
+        return null;
+    }
+    
     [Serializable]
     public struct InventoryItemData
     {

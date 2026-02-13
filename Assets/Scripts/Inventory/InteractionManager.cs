@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using UnityEngine;
 using PurrNet;
 
@@ -25,7 +26,8 @@ public class InteractionManager : MonoBehaviour
         if (!Physics.Raycast(_cam.transform.position, _cam.transform.forward, out RaycastHit hit, interactDistance, interactableLayer))
             return;
         
-        var interactables = hit.collider.GetComponents<AInteractable>();
+        var interactables = hit.collider.GetComponents<AInteractable>().ToList();
+        interactables.AddRange(hit.collider.GetComponentsInParent<AInteractable>());
         foreach (var interactable in interactables)
         {
             if(interactable.CanInteract())
@@ -47,8 +49,17 @@ public class InteractionManager : MonoBehaviour
             return;
         }
 
-        if (_currentHoveredInteractables != null && _currentHoveredInteractables.Length > 0 && hit.collider.gameObject == _currentHoveredInteractables[0].gameObject)
-            return;
+        if (_currentHoveredInteractables != null && _currentHoveredInteractables.Length > 0)
+        {
+            if((!_currentHoveredInteractables[0]))
+            {
+                ClearHover();
+                return;
+            }
+            
+            if(hit.collider.gameObject == _currentHoveredInteractables[0].gameObject)
+                return;
+        }
         
         _currentHoveredInteractables = interactables;
         foreach (var interactable in interactables)
@@ -64,7 +75,10 @@ public class InteractionManager : MonoBehaviour
             return;
 
         foreach (var interactable in _currentHoveredInteractables)
-            interactable.OnStopHover();
+        {
+            if(interactable)
+                interactable.OnStopHover();
+        }
         _currentHoveredInteractables = null;
     }
 }

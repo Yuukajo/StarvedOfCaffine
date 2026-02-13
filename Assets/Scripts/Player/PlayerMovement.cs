@@ -23,7 +23,8 @@ public class PlayerMovement : NetworkBehaviour
     [Header("References")]
     [SerializeField] private NetworkAnimator playerAnimator;
     [SerializeField] private List<Renderer> playerRenderers;
-
+    [SerializeField] private Transform itemPoint;
+    
     private Camera _playerCamera;
     private CharacterController characterController;
     private Vector3 velocity;
@@ -37,9 +38,7 @@ public class PlayerMovement : NetworkBehaviour
         enabled = isOwner;
 
         if (!isOwner)
-        {
            return;
-        }
         
         localPlayerMovement = this;
         _playerCamera = Camera.main;
@@ -47,7 +46,7 @@ public class PlayerMovement : NetworkBehaviour
         SetShadowOnly();
         _playerCamera.transform.SetParent(transform);
         _playerCamera.transform.localPosition = cameraOffset;
-        
+        itemPoint.SetParent(_playerCamera.transform); 
         if (_playerCamera == null)
         {
             enabled = false;
@@ -70,6 +69,7 @@ public class PlayerMovement : NetworkBehaviour
         if (!isOwner)
             return;
 
+        localPlayerMovement = null;
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
     }
