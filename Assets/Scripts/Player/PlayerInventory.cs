@@ -10,6 +10,7 @@ public class PlayerInventory : NetworkBehaviour
     [SerializeField] private Transform itemPoint;
     private Item _itemInHand;
 
+    private const int ignoreRaycastLayer = 2;
     protected override void OnSpawned()
     {
         base.OnSpawned();
@@ -58,8 +59,8 @@ public class PlayerInventory : NetworkBehaviour
             return;
             
         _itemInHand = Instantiate(item, itemPoint.position, itemPoint.rotation, itemPoint);
-
         _itemInHand.SetKinematic(true);
+        _itemInHand.QueueOnSpawned(() => _itemInHand.SetLayer(ignoreRaycastLayer));
     }
 
     public void UnequipItem(Item item)

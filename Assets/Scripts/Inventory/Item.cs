@@ -55,15 +55,17 @@ public abstract class Item : AInteractable
         rigidbody.isKinematic = toggle;
     }
 
-    public override void OnHover()
+    [ObserversRpc(bufferLast:true)]
+
+    public void SetLayer(int ignoreRaycastLayer)
     {
-        base.OnHover();
-        Debug.Log("Strated hovering ");
+        SetLayerRecursive(gameObject, ignoreRaycastLayer);
     }
 
-    public override void OnStopHover()
+    private void SetLayerRecursive(GameObject obj, int layer)
     {
-        base.OnStopHover();
-        Debug.Log("Stopped hovering ");
+        obj.layer = layer;
+        foreach (Transform child in obj.transform)
+            SetLayerRecursive(child.gameObject, layer);
     }
 }
